@@ -42,7 +42,7 @@ def train_horse2zebra(discriminator_H, discriminator_Z, generator_Z, generator_H
             # combine two discriminator loss
             D_loss = (D_H_loss + D_Z_loss) / 2
 
-        ave_D_loss += D_loss
+        ave_D_loss += D_loss.item()
         optimizer_dis.zero_grad()
         dis_scaler.scale(D_loss).backward()
         dis_scaler.step(optimizer_dis)
@@ -74,12 +74,11 @@ def train_horse2zebra(discriminator_H, discriminator_Z, generator_Z, generator_H
                       + cycle_horse_loss * config.LAMBDA_CYCLE
                       + identity_zebra_loss * config.LAMBDA_IDENTITY
                       + identity_horse_loss * config.LAMBDA_IDENTITY)
-        ave_G_loss += G_loss
+        ave_G_loss += G_loss.item()
         optimizer_gen.zero_grad()
         gen_scaler.scale(G_loss).backward()
         gen_scaler.step(optimizer_gen)
         gen_scaler.update()
-
         if idx % 200 == 0:
             save_image(fake_horse*0.5+0.5, config.FAKE_HORSE_PATH%(epoch, idx))
             save_image(fake_zebra*0.5+0.5, config.FAKE_ZEBRA_PATH%(epoch, idx))
