@@ -13,7 +13,7 @@ LEARNING_RATE = 2e-4
 LAMBDA_IDENTITY = 0.0
 LAMBDA_CYCLE = 10
 NUM_WORKERS = 4
-NUM_EPOCHS = 100
+NUM_EPOCHS = 200
 LOAD_MODEL = False
 SAVE_MODEL = True
 SHOW_TQDM = False
@@ -21,6 +21,8 @@ CHECKPOINT_GEN_H = "checkpoints/horse2zebra/%d_genh.pth.tar"
 CHECKPOINT_GEN_Z = "checkpoints/horse2zebra/%d_genz.pth.tar"
 CHECKPOINT_CRITIC_H = "checkpoints/horse2zebra/%d_critich.pth.tar"
 CHECKPOINT_CRITIC_Z = "checkpoints/horse2zebra/%d_criticz.pth.tar"
+
+IMG_SAVE_FREQ = 400
 
 FAKE_HORSE_PATH = "save_images/horse2zebra/fake_horse/%d_%d_horse.png"
 FAKE_ZEBRA_PATH = "save_images/horse2zebra/fake_zebra/%d_   %d_zebra.png"

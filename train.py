@@ -79,7 +79,7 @@ def train_horse2zebra(discriminator_H, discriminator_Z, generator_Z, generator_H
         gen_scaler.scale(G_loss).backward()
         gen_scaler.step(optimizer_gen)
         gen_scaler.update()
-        if idx % 200 == 0:
+        if idx % config.IMG_SAVE_FREQ == 0:
             save_image(fake_horse*0.5+0.5, config.FAKE_HORSE_PATH%(epoch, idx))
             save_image(fake_zebra*0.5+0.5, config.FAKE_ZEBRA_PATH%(epoch, idx))
     print(epoch+1, ave_D_loss / len(data_loader), ave_G_loss / len(data_loader))
