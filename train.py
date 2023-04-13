@@ -13,8 +13,10 @@ from discriminator import Discriminator
 from generator import Generator
 
 def train_horse2zebra(discriminator_H, discriminator_Z, generator_Z, generator_H, data_loader, optimizer_dis, optimizer_gen,
-              L1_loss, mse_loss, dis_scaler, gen_scaler):
+              L1_loss, mse_loss, dis_scaler, gen_scaler, epoch):
     loop = tqdm(data_loader, leave=True) if config.SHOW_TQDM else data_loader
+    ave_D_loss = 0.0
+    ave_G_loss = 0.0
     for idx, (zebra, horse) in enumerate(loop):
         zebra = zebra.to(config.DEVICE)
         horse = horse.to(config.DEVICE)
@@ -40,6 +42,7 @@ def train_horse2zebra(discriminator_H, discriminator_Z, generator_Z, generator_H
             # combine two discriminator loss
             D_loss = (D_H_loss + D_Z_loss) / 2
 
+        ave_D_loss += D_loss
         optimizer_dis.zero_grad()
         dis_scaler.scale(D_loss).backward()
         dis_scaler.step(optimizer_dis)
@@ -71,14 +74,16 @@ def train_horse2zebra(discriminator_H, discriminator_Z, generator_Z, generator_H
                       + cycle_horse_loss * config.LAMBDA_CYCLE
                       + identity_zebra_loss * config.LAMBDA_IDENTITY
                       + identity_horse_loss * config.LAMBDA_IDENTITY)
+        ave_G_loss += G_loss
         optimizer_gen.zero_grad()
         gen_scaler.scale(G_loss).backward()
         gen_scaler.step(optimizer_gen)
         gen_scaler.update()
 
         if idx % 200 == 0:
-            save_image(fake_horse*0.5+0.5, config.FAKE_HORSE_PATH%idx)
-            save_image(fake_zebra*0.5+0.5, config.FAKE_ZEBRA_PATH%idx)
+            save_image(fake_horse*0.5+0.5, config.FAKE_HORSE_PATH%(epoch, idx))
+            save_image(fake_zebra*0.5+0.5, config.FAKE_ZEBRA_PATH%(epoch, idx))
+    print(epoch+1, ave_D_loss / len(data_loader), ave_G_loss / len(data_loader))
 
 def main():
     # classify horses
@@ -120,7 +125,7 @@ def main():
 
     for epoch in range(config.NUM_EPOCHS):
         train_horse2zebra(discriminator_H, discriminator_Z, generator_Z, generator_H, data_loader, optimizer_dis,
-                          optimizer_gen, L1_loss, mse_loss, dis_scaler, gen_scaler)
+                          optimizer_gen, L1_loss, mse_loss, dis_scaler, gen_scaler, epoch)
         if config.SAVE_MODEL:
             save_checkpoint(generator_H, optimizer_gen, filename=config.CHECKPOINT_GEN_H%epoch)
             save_checkpoint(generator_Z, optimizer_gen, filename=config.CHECKPOINT_GEN_Z%epoch)

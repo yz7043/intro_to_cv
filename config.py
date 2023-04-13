@@ -22,8 +22,8 @@ CHECKPOINT_GEN_Z = "checkpoints/horse2zebra/%d_genz.pth.tar"
 CHECKPOINT_CRITIC_H = "checkpoints/horse2zebra/%d_critich.pth.tar"
 CHECKPOINT_CRITIC_Z = "checkpoints/horse2zebra/%d_criticz.pth.tar"
 
-FAKE_HORSE_PATH = "save_images/horse2zebra/fake_horse/%d_horse.png"
-FAKE_ZEBRA_PATH = "save_images/horse2zebra/fake_zebra/%d_zebra.png"
+FAKE_HORSE_PATH = "save_images/horse2zebra/fake_horse/%d_%d_horse.png"
+FAKE_ZEBRA_PATH = "save_images/horse2zebra/fake_zebra/%d_%d_zebra.png"
 
 transforms = A.Compose(
     [
