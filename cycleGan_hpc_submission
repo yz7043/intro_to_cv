@@ -1,0 +1,17 @@
+#!/bin/bash
+#SBATCH --job-name=cycleGan_h2z
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=4
+#SBATCH --output=%x.out
+#SBATCH --mem=16GB
+#SBATCH --time=12:00:00
+#SBATCH --gres=gpu:1
+
+
+module purge
+module load anaconda3/2020.07
+conda activate /scratch/yz7043/envs_dirs/newtorch
+eval "$(conda shell.bash hook)" # to init shell
+conda activate /scratch/yz7043/envs_dirs/newtorch
+python --version
+python train.py
