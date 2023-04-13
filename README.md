@@ -21,6 +21,11 @@ cd horse2zebra
 mkdir fake_horse
 mkdir fake_zebra
 ```
-
 ## How to set training parameters
 You need to modify file inside config.py
+
+## How to train a model
+```shell
+python train.py
+```
+if there is any package missing, install them.
