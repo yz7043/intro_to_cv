@@ -77,8 +77,8 @@ def train_horse2zebra(discriminator_H, discriminator_Z, generator_Z, generator_H
         gen_scaler.update()
 
         if idx % 200 == 0:
-            save_image(fake_horse*0.5+0.5, f"save_images/horse2zebra/fake_horse/{idx}_horse.png")
-            save_image(fake_zebra*0.5+0.5, f"save_images/horse2zebra/fake_zebra/{idx}_zebra.png")
+            save_image(fake_horse*0.5+0.5, config.FAKE_HORSE_PATH%idx)
+            save_image(fake_zebra*0.5+0.5, config.FAKE_ZEBRA_PATH%idx)
 
 def main():
     # classify horses
