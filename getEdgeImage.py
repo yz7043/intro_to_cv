@@ -1,6 +1,4 @@
 import cv2
-import matplotlib.pyplot as plt
-import numpy as np
 import os
 
 def convert_to_edge_img(root_dir, save_dir):
