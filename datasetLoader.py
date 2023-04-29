@@ -5,7 +5,6 @@ import config
 from torch.utils.data import Dataset
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
 
 
 class Horse2ZebraDataset(Dataset):

@@ -1,6 +1,5 @@
 import torch
-from datasetLoader import Horse2ZebraDataset, Edge2ColoredDataset
-import sys
+from datasetLoader import Horse2ZebraDataset
 from utils import save_checkpoint, load_checkpoint
 from torch.utils.data import DataLoader
 import torch.nn as nn
