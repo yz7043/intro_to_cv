@@ -3,8 +3,7 @@ import albumentations as A
 from albumentations.pytorch import ToTensorV2
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-TRAIN_DIR = "horse2zebra/"
-VAL_DIR = "horse2zebra/"
+
 TRAIN_HORSE_ROOT = "horse2zebra/trainA/"
 TRAIN_ZEBRA_ROOT = "horse2zebra/trainB/"
 
@@ -22,10 +21,20 @@ CHECKPOINT_GEN_Z = "checkpoints/horse2zebra/%d_genz.pth.tar"
 CHECKPOINT_CRITIC_H = "checkpoints/horse2zebra/%d_critich.pth.tar"
 CHECKPOINT_CRITIC_Z = "checkpoints/horse2zebra/%d_criticz.pth.tar"
 
+# Check point for edge to rgb
+CHECKPOINT_GEN_H_RGB = "checkpoints/edge2rgb/%d_genh.pth.tar" 
+CHECKPOINT_GEN_Z_RGB = "checkpoints/edge2rgb/%d_genz.pth.tar"
+CHECKPOINT_CRITIC_H_RGB = "checkpoints/edge2rgb/%d_critich.pth.tar"
+CHECKPOINT_CRITIC_Z_RGB = "checkpoints/edge2rgb/%d_criticz.pth.tar"
+EDGE_RGB_ROOT_A = "edge2rgb/trainA/"
+EDGE_RGB_ROOT_B = "edge2rgb/trainB/"
+FAKE_EDGE_PATH = "save_images/edge2rgb/fake_edge/%d_%d_edge.png"
+FAKE_COLOR_PATH = "save_images/edge2rgb/fake_color/%d_%d_color.png"
+
 IMG_SAVE_FREQ = 400
 
 FAKE_HORSE_PATH = "save_images/horse2zebra/fake_horse/%d_%d_horse.png"
-FAKE_ZEBRA_PATH = "save_images/horse2zebra/fake_zebra/%d_   %d_zebra.png"
+FAKE_ZEBRA_PATH = "save_images/horse2zebra/fake_zebra/%d_%d_zebra.png"
 
 transforms = A.Compose(
     [

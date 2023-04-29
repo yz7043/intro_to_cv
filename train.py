@@ -1,16 +1,17 @@
 import torch
-from datasetLoader import Horse2ZebraDataset
+from datasetLoader import Horse2ZebraDataset, Edge2ColoredDataset
 import sys
 from utils import save_checkpoint, load_checkpoint
 from torch.utils.data import DataLoader
 import torch.nn as nn
 import torch.optim as optim
 import config
-if config.SHOW_TQDM:
-    from tqdm import tqdm
+from tqdm import tqdm
 from torchvision.utils import save_image
 from discriminator import Discriminator
 from generator import Generator
+import argparse
+parser = argparse.ArgumentParser()
 
 def train_horse2zebra(discriminator_H, discriminator_Z, generator_Z, generator_H, data_loader, optimizer_dis, optimizer_gen,
               L1_loss, mse_loss, dis_scaler, gen_scaler, epoch):
@@ -131,5 +132,26 @@ def main():
             save_checkpoint(discriminator_H, optimizer_dis, filename=config.CHECKPOINT_CRITIC_H%epoch)
             save_checkpoint(discriminator_Z, optimizer_dis, filename=config.CHECKPOINT_CRITIC_Z%epoch)
 
+
+
+
 if __name__ == "__main__":
-    main()
+    parser.add_argument('--is_h2z', help='Is this job horse to zebra', default=False, type=bool)
+    parser.add_argument('--is_color', help='Is this job recolor', default=False, type=bool)
+    parser.add_argument('--tqdm', help='If use tqdm', default=False, type=bool)
+    args = parser.parse_args()
+    config.SHOW_TQDM = args.tqdm
+    if args.is_h2z:
+        main()
+    elif args.is_color:
+        config.TRAIN_HORSE_ROOT = config.EDGE_RGB_ROOT_A
+        config.TRAIN_ZEBRA_ROOT = config.EDGE_RGB_ROOT_B
+        config.CHECKPOINT_GEN_H = config.CHECKPOINT_GEN_H_RGB
+        config.CHECKPOINT_GEN_Z = config.CHECKPOINT_GEN_Z_RGB
+        config.CHECKPOINT_CRITIC_H = config.CHECKPOINT_CRITIC_H_RGB
+        config.CHECKPOINT_CRITIC_Z = config.CHECKPOINT_CRITIC_Z_RGB
+        config.FAKE_HORSE_PATH = config.FAKE_EDGE_PATH
+        config.FAKE_ZEBRA_PATH = config.FAKE_COLOR_PATH
+        main()
+    # print(args)
+    # main()

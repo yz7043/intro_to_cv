@@ -3,7 +3,10 @@ from PIL import Image
 import os
 import config
 from torch.utils.data import Dataset
+import cv2
 import numpy as np
+import matplotlib.pyplot as plt
+
 
 class Horse2ZebraDataset(Dataset):
     def __init__(self, zebra_root, horse_root, transform=None):
@@ -39,7 +42,39 @@ class Horse2ZebraDataset(Dataset):
             horse_img = aug["image0"]
         return zebra_img, horse_img
 
+class Edge2ColoredDataset(Dataset):
+    def __init__(self, A_root, B_root, transform=None):
+        self.A_root = A_root
+        self.B_root = B_root
+        self.A_imgs = os.listdir(A_root)
+        self.B_imgs = os.listdir(B_root)
+        self.A_len = len(self.A_imgs)
+        self.B_len = len(self.B_imgs)
+
+        self.dataset_len = max(self.A_len, self.B_len)
+
+
+    def __len__(self):
+        return self.dataset_len
+
+    def __getitem__(self, idx):
+        A_img = self.A_imgs[idx]
+        B_img = self.B_imgs[idx]
+        A_dir = os.path.join(self.A_root, A_img)
+        B_dir = os.path.join(self.B_root, B_img)
+        A_img = self._convertToEdge(A_dir)
+        B_img = np.array(Image.open(B_dir). convert("RGB"))
+        return A_img, B_img
+
+    def _convertToEdge(self, img_dir):
+        img = cv2.imread(img_dir)
+        edge = cv2.Canny(img, 150, 200)
+        edge_img = cv2.cvtColor(edge, cv2.COLOR_GRAY2RGB)
+        return np.array(edge_img)
 
 if __name__ == "__main__":
-    ds = Horse2ZebraDataset(config.TRAIN_DIR+"trainB", config.TRAIN_DIR+"trainA")
+    ds = Horse2ZebraDataset(config.TRAIN_ZEBRA_ROOT, config.TRAIN_HORSE_ROOT)
     print(ds[0][0].shape)
+    # ds = Edge2ColoredDataset(config.EDGE_RGB_ROOT_A, config.EDGE_RGB_ROOT_B)
+    # print(ds[0][0].shape)
+    # print(ds[0][1].shape)
