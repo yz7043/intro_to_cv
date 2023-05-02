@@ -57,6 +57,9 @@ You need to modify file inside config.py
 
 ## How to train a model
 ```shell
-python train.py --is_h2z True
+# Train the horse-to-zebra model
+python train.py --is_h2z True --tqdm False
+# Train the edge-recolor model
+python train.py --is_color True --tqdm False
 ```
 if there is any package missing, install them.
