@@ -63,3 +63,8 @@ python train.py --is_h2z True --tqdm False
 python train.py --is_color True --tqdm False
 ```
 if there is any package missing, install them.
+
+## Reference 
+[1] J.-Y. Zhu, T. Park, P. Isola, and A. A. Efros, “Unpaired image-to-image translation using cycle-consistent adversarial networks,” in 2017 IEEE International Conference on Computer Vision (ICCV), 2017, pp. 2242–2251.  
+[2] T. Zheng and Y. Zhu, “Self-supervised image-to-image traslation,” https://github.com/zhengtr/Deep learning sys, 2022.  
+[3] A. Persson, “Machine-learning-collection,” git@github.com:aladdinpersson/Machine-Learning-Collection.git, 2021.  
